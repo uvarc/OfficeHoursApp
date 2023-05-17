@@ -14,13 +14,32 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/](http://localhost:3000/api/).
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+This project requires an env for the following variables:
+```bash
+LDAP_API_KEY
+JIRA_API_KEY
+```
+
+## Project Structure
+
+`pages/index.js` is where the form for user input is generated. It uses the `components` directory to generate more complex 
+dropdowns.
+
+`pages/api/form.js` is the only API route in this project. It is responsible for taking the user input and generating the 
+appropriate JQL query to send to the JIRA API. It also uses the [LDAP API](https://github.com/uvarc/ldap-api) to get the department and school for the visitor. 
+
+## TO DO
+
+Currently, assignees for the JIRA ticket are hard-coded as a list inside of `index.js`. This should eventually be abstracted to some other service, or generated from an API call to JIRA.
+
+There is some refactoring that can be done to better improve readibility, maintainability and DRY practices. 
 
 ## Learn More
 
@@ -31,8 +50,3 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
