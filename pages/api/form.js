@@ -1,8 +1,4 @@
-import { headers } from "@/next.config";
 import axios from "axios";
-import csv from "csv-parser";
-import * as fs from "fs";
-import path from "path";
 
 const config = {
   headers: {
@@ -64,10 +60,28 @@ export default async function handler(req, res) {
   const mappedDetails = body.details.map((item) => {
     return { value: item.value };
   });
+
+  var jiraUsername = body.userID;
+  if (ldapRes.data.data[0].displayName === "NA") {
+    jiraUsername = body.userID;
+  } else {
+    // Split the name into parts using comma and whitespace
+    const nameParts = ldapRes.data.data[0].displayName.split(", ");
+
+    // Extract the first name
+    const firstName = nameParts[1].split(" ")[0];
+
+    // Extract the last name
+    const lastName = nameParts[0];
+
+    // Construct the new name in "first name last name" format
+    jiraUsername = `${firstName} ${lastName}`;
+  }
   const customerData = {
-    name: body.visitorName,
+    name: jiraUsername,
     email: body.userID + "@virginia.edu",
   };
+
   const customerId = await JiraUser(customerData);
   //send to jira
   const jiraData = {
@@ -97,13 +111,14 @@ export default async function handler(req, res) {
         ],
       },
       ...(body.staff[0].value ? { assignee: { id: body.staff[0].value } } : {}),
+      customfield_10261: { value: body.requestType },
       customfield_10001: "578",
       customfield_10255: body.repID,
       customfield_10241: ldapRes.data.data[0].department,
       customfield_10242: ldapRes.data.data[0].school,
       customfield_10256: body.date,
       customfield_10280: mappedDetails,
-      customfield_10282: {value: body.meetingType},
+      customfield_10282: { value: body.meetingType },
       ...(body.computePlatform1 !== "none"
         ? {
             customfield_10278: {

@@ -94,8 +94,6 @@ export default function Home() {
     setSubmitting(true);
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
-    console.log(event);
-    console.log(typeof event.target.formDropDownStorage.value);
     var Storage1 = "";
     var Storage2 = "";
     var Compute1 = "";
@@ -132,15 +130,14 @@ export default function Home() {
       comments: event.target.formComments.value,
       summary: event.target.formSummary.value,
       date: event.target.formDate.value,
-      visitorName: event.target.formVisitor.value,
       details: details,
       storagePlatform1: Storage1,
       storagePlatform2: Storage2,
       computePlatform1: Compute1,
       computePlatform2: Compute2,
       discipline: event.target.formDropDownDiscipline.value,
+      requestType: event.target.formDropDownRequestType.value,
     };
-    console.log(data);
 
     // Send the data to the server in JSON format.
     const JSONdata = JSON.stringify(data);
@@ -165,7 +162,6 @@ export default function Home() {
     // If server returns the name submitted, that means the form works.
     if (response.status === 200) {
       const result = await response.json();
-      console.log(result);
       setSubmitting(false);
       setCompleted(true);
       setSuccess(true);
@@ -178,7 +174,6 @@ export default function Home() {
       setCompleted(true);
       setError(true);
       setErrorMesg(response.statusText);
-      console.log(response);
     }
   };
 
@@ -199,14 +194,6 @@ export default function Home() {
             <Card.Body>
               {!completed ? (
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="formVisitor">
-                    <Form.Label>Visitor Name</Form.Label>
-                    <Form.Control
-                      type="input"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </Form.Group>
                   <Form.Group className="mb-3" controlId="formID">
                     <Form.Label>Visitor ID</Form.Label>
                     <Form.Control
@@ -242,6 +229,18 @@ export default function Home() {
                   <Form.Group className="mb-3" controlId="formSummary">
                     <Form.Label>Summary</Form.Label>
                     <Form.Control as="textarea" rows={1} required />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formDropDownRequestType">
+                    <Form.Label>Request Type</Form.Label>
+                    <Form.Select aria-label="Request" required>
+                      <option value="">Select Option</option>
+                      <option value="Technical Support Tier 1">Technical Support Tier 1</option>
+                      <option value="Technical Support Tier 2">Technical Support Tier 2</option>
+                      <option value="Consulting Tier 1">Consulting Tier 1</option>
+                      <option value="Consulting Tier 2">Consulting Tier 2</option>
+                      <option value="Provisioning/Deprovisioning">Provisioning/Deprovisioning</option>
+                      <option value="Education/Outreach">Education/Outreach</option>
+                    </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formDropDownStorage">
                     <CascadingDropdownStorage />
