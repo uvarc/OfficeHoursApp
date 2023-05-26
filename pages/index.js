@@ -221,15 +221,15 @@ export default function Home() {
                   <Form.Group className="mb-3" controlId="formDropDownMeeting">
                     <Form.Label>Meeting Type</Form.Label>
                     <Form.Select aria-label="Meeting">
-                      <option value="Office Hours">Office Hours</option>
-                      <option value="Consultation">Consultation</option>
+                      <option value="Office Hours">Office Hours (Walk-In)</option>
+                      <option value="Consultation">Consultation (Scheduled)</option>
                       <option value="Other">Other</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formSummary">
                     <Form.Label>Summary</Form.Label>
                     <Form.Control as="textarea" rows={1} required />
-                  </Form.Group>
+                  </Form.Group>                  
                   <Form.Group className="mb-3" controlId="formDropDownRequestType">
                     <Form.Label>Request Type</Form.Label>
                     <Form.Select aria-label="Request" required>
@@ -242,11 +242,11 @@ export default function Home() {
                       <option value="Education/Outreach">Education/Outreach</option>
                     </Form.Select>
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formDropDownStorage">
-                    <CascadingDropdownStorage />
-                  </Form.Group>
                   <Form.Group className="mb-3" controlId="formDropDownCompute">
                     <CascadingDropdownCompute />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formDropDownStorage">
+                    <CascadingDropdownStorage />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formDropDownDetails">
                     <Form.Label>Details</Form.Label>

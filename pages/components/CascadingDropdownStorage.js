@@ -52,12 +52,7 @@ const SSZ = [
   "Rivanna Home",
   "Rivanna Scratch",
   "Research Project",
-  "Research Standard",
-  "Quota",
-  "Drive mapping",
-  "Permissions",
-  "Performance",
-  "other",
+  "Research Standard"
 ];
 
 const HSZ = ["Ivy Home", "ICS", "Research Project (used for ACCORD)", "other"];
