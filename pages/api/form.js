@@ -117,6 +117,7 @@ export default async function handler(req, res) {
       customfield_10241: ldapRes.data.data[0].department,
       customfield_10242: ldapRes.data.data[0].school,
       customfield_10256: body.date,
+      customfield_10281: body.discipline,
       customfield_10280: mappedDetails,
       customfield_10282: { value: body.meetingType },
       ...(body.computePlatform1 !== "none"
