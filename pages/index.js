@@ -202,6 +202,33 @@ export default function Home() {
                       required
                     />
                   </Form.Group>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="formDropDownDiscipline"
+                  >
+                    <Form.Label>Discipline</Form.Label>
+                    <Form.Select aria-label="Discipline">
+                      <option value="">Select Option</option>
+                      <option value="Astronomy">Astronomy</option>
+                      <option value="Biochemistry">Biochemistry</option>
+                      <option value="Bioinformatics">Bioinformatics</option>
+                      <option value="Biology">Biology</option>
+                      <option value="Chemistry">Chemistry</option>
+                      <option value="Commerce">Commerce</option>
+                      <option value="Computer Science">Computer Science</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="Economics">Economics</option>
+                      <option value="Environmental Science">
+                        Environmental Science
+                      </option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Health Sciences">Health Sciences</option>
+                      <option value="Informatics">Informatics</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Social Sciences">Social Sciences</option>
+                      <option value="Other">Other</option>
+                    </Form.Select>
+                  </Form.Group>
                   <Form.Group className="mb-3" controlId="formRep">
                     <Form.Label>RC Representative(s)</Form.Label>
                     <Select
@@ -221,8 +248,8 @@ export default function Home() {
                   <Form.Group className="mb-3" controlId="formDropDownMeeting">
                     <Form.Label>Meeting Type</Form.Label>
                     <Form.Select aria-label="Meeting">
-                      <option value="Office Hours">Office Hours (Walk-In)</option>
-                      <option value="Consultation">Consultation (Scheduled)</option>
+                      <option value="Office Hours (walk-in)">Office Hours (walk-in)</option>
+                      <option value="Consultation (scheduled)">Consultation (scheduled)</option>
                       <option value="Other">Other</option>
                     </Form.Select>
                   </Form.Group>
@@ -259,33 +286,6 @@ export default function Home() {
                       classNamePrefix="select"
                       onChange={(option) => setDetails(option)}
                     />
-                  </Form.Group>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="formDropDownDiscipline"
-                  >
-                    <Form.Label>Discipline</Form.Label>
-                    <Form.Select aria-label="Discipline">
-                      <option value="">Select Option</option>
-                      <option value="Astronomy">Astronomy</option>
-                      <option value="Biochemistry">Biochemistry</option>
-                      <option value="Bioinformatics">Bioinformatics</option>
-                      <option value="Biology">Biology</option>
-                      <option value="Chemistry">Chemistry</option>
-                      <option value="Commerce">Commerce</option>
-                      <option value="Computer Science">Computer Science</option>
-                      <option value="Data Science">Data Science</option>
-                      <option value="Economics">Economics</option>
-                      <option value="Environmental Science">
-                        Environmental Science
-                      </option>
-                      <option value="Engineering">Engineering</option>
-                      <option value="Health Sciences">Health Sciences</option>
-                      <option value="Informatics">Informatics</option>
-                      <option value="Physics">Physics</option>
-                      <option value="Social Sciences">Social Sciences</option>
-                      <option value="Other">Other</option>
-                    </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formComments">
                     <Form.Label>Comments</Form.Label>
