@@ -213,19 +213,23 @@ export default function Home() {
                       <option value="Biochemistry">Biochemistry</option>
                       <option value="Bioinformatics">Bioinformatics</option>
                       <option value="Biology">Biology</option>
+                      <option value="Business">Business</option>
                       <option value="Chemistry">Chemistry</option>
                       <option value="Commerce">Commerce</option>
                       <option value="Computer Science">Computer Science</option>
                       <option value="Data Science">Data Science</option>
                       <option value="Economics">Economics</option>
+                      <option value="Education">Education</option>
                       <option value="Environmental Science">
                         Environmental Science
                       </option>
                       <option value="Engineering">Engineering</option>
                       <option value="Health Sciences">Health Sciences</option>
                       <option value="Informatics">Informatics</option>
+                      <option value="Law">Law</option>
                       <option value="Physics">Physics</option>
                       <option value="Social Sciences">Social Sciences</option>
+
                       <option value="Other">Other</option>
                     </Form.Select>
                   </Form.Group>
