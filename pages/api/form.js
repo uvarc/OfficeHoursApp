@@ -40,7 +40,7 @@ const JiraUser = async (person) => {
       return response.data.accountId;
     }
   } catch (error) {
-    return undefined;
+    console.log(error);
   }
 };
 
@@ -57,7 +57,6 @@ export default async function handler(req, res) {
     "https://ldap-api.pods.uvarc.io/api/multiuser?userID=" + body.userID,
     config
   );
-  console.log(ldapRes.data.data[0].displayName);
   const mappedDetails = body.details.map((item) => {
     return { value: item.value };
   });
@@ -185,6 +184,7 @@ export default async function handler(req, res) {
     }
     // Sends a HTTP success code
   } catch (err) {
+    console.log(err)
     res.status(500).json({ data: "Error" });
   }
   //   } else {
