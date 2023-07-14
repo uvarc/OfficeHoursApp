@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     "https://ldap-api.pods.uvarc.io/api/multiuser?userID=" + body.userID,
     config
   );
-  console.log(ldapRes);
+  console.log(ldapRes.data.data[0].displayName);
   const mappedDetails = body.details.map((item) => {
     return { value: item.value };
   });
