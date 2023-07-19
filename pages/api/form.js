@@ -156,7 +156,6 @@ export default async function handler(req, res) {
   try {
     const jiraRes = await axios(config2);
     // If ticket is created, make PUT call to Service Desk API
-    console.log(jiraRes);
     if (jiraRes.status === 201) {
       const staffIds = body.staff.slice(1).map((obj) => obj.value);
       if (staffIds.length > 0) {
