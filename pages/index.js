@@ -256,7 +256,7 @@ export default function Home() {
                       <option value="Office Hours (walk-in)">Office Hours (walk-in)</option>
                       <option value="Consultation (scheduled)">Consultation (scheduled)</option>
                       <option value="Outreach Event (scheduled)">Outreach Event (scheduled)</option>
-                      <option value="Training">Trainings</option>
+                      <option value="Training">Training</option>
                       <option value="Other">Other</option>
                     </Form.Select>
                   </Form.Group>
