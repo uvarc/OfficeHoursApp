@@ -37,6 +37,8 @@ export default function Home() {
     { value: "633af9b614c6b4b2210f43de", label: "Marcus Bobar" },
     { value: "712020:45611a80-be03-48c2-ae0c-e51e34f129ed", label: "Paul Orndorff" },
     { value: "5de8625abe6c1f0d0720ab7e", label: "Ruoshi Sun" },
+    { value: "712020:6b6f91a0-0ade-410f-a7e1-a8d7d610b5ef", label: "Camden Duy" },
+    { value: "712020:0afecc32-e11c-4eae-abf0-5af6213c94d5", label: "Hana Parece" },
   ];
 
   const detailOptions = [
