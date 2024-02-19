@@ -23,22 +23,18 @@ export default function Home() {
   const [staff, setStaff] = useState([]);
 
   const rcStaff = [
-    { value: "62b9a888c9f2df7b608a29ea", label: "Ahmad Sheikhzada" },
-    { value: "6192ee7bb43d5b006a896d88", label: "Caitlin Jagla" },
-    { value: "5df79acb1833f80cb2ecf4a2", label: "Christina Gancayco" },
-    { value: "5cb4f3dacef84c118d76660f", label: "Ed Hall" },
-    { value: "5df42b6873b0bd0e4d83647e", label: "Gladys Andino" },
-    { value: "5df42b69d3b8550edca7ce4d", label: "Jackie Huband" },
-    { value: "5df42a1d2702bc0ec7e7dea0", label: "Karsten Siller" },
-    {
-      value: "557058:e6d637e3-84d5-43ed-8790-3f9a6c7b2a77",
-      label: "Katherine Holcomb",
-    },
-    { value: "633af9b614c6b4b2210f43de", label: "Marcus Bobar" },
-    { value: "712020:45611a80-be03-48c2-ae0c-e51e34f129ed", label: "Paul Orndorff" },
-    { value: "5de8625abe6c1f0d0720ab7e", label: "Ruoshi Sun" },
-    { value: "712020:6b6f91a0-0ade-410f-a7e1-a8d7d610b5ef", label: "Camden Duy" },
-    { value: "712020:0afecc32-e11c-4eae-abf0-5af6213c94d5", label: "Hana Parece" },
+    { value: "jus2yw", label: "Ahmad Sheikhzada" },
+    { value: "wac3aj", label: "Caitlin Jagla" },
+    { value: "teh1m", label: "Ed Hall" },
+    { value: "gka6a", label: "Gladys Andino" },
+    { value: "jmh5ad", label: "Jackie Huband" },
+    { value: "khs3z", label: "Karsten Siller" },
+    { value: "kah3f", label: "Katherine Holcomb" },
+    { value: "mb5wt", label: "Marcus Bobar" },
+    { value: "egg3xa", label: "Paul Orndorff" },
+    { value: "rs7wz", label: "Ruoshi Sun" },
+    { value: "cmd7ag", label: "Camden Duy" },
+    { value: "xve5kj", label: "Hana Parece" },
   ];
 
   const detailOptions = [
@@ -169,7 +165,7 @@ export default function Home() {
       setCompleted(true);
       setSuccess(true);
       setTicket(
-        "https://varesearchhelp.atlassian.net/jira/servicedesk/projects/OH/issues/" +
+        "https://jira-dev.admin.virginia.edu/browse/" +
           result.data.key
       );
     } else {
