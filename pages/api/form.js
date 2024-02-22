@@ -88,7 +88,7 @@ export default async function handler(req, res) {
       description: body.comments,
       ...(body.staff[0].value ? { assignee: { name: body.staff[0].value } } : {}),
       customfield_13084: { value: body.requestType },
-      //customfield_10972: "254",
+      customfield_10972: "Office Hours Request",
       //customfield_10255: body.repID,
       customfield_13076: ldapRes.data.data[0].department,
       customfield_13096: ldapRes.data.data[0].school,
@@ -141,7 +141,7 @@ export default async function handler(req, res) {
             "/participant",
           data: {
             // Provide data for updating the ticket in the Service Desk API
-            accountIds: staffIds,
+            usernames: staffIds,
           },
           headers: jira.headers,
         };
