@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const jira = {
-  url: "https://jira-dev.admin.virginia.edu",
+  url: "https://jira.admin.virginia.edu",
   headers: {
      Authorization: "Bearer " + process.env.JIRA_API_KEY,
      "X-ExperimentalApi": "opt-in",
@@ -87,18 +87,18 @@ export default async function handler(req, res) {
       },
       description: body.comments,
       ...(body.staff[0].value ? { assignee: { name: body.staff[0].value } } : {}),
-      customfield_13084: { value: body.requestType },
+      customfield_13184: { value: body.requestType },
       customfield_10972: "Office Hours Request",
       //customfield_10255: body.repID,
       customfield_13076: ldapRes.data.data[0].department,
       customfield_13096: ldapRes.data.data[0].school,
-      customfield_13075: body.date,
-      customfield_13090: body.discipline,
-      customfield_13094: mappedDetails,
-      customfield_13102: { value: body.meetingType },
+      customfield_13175: body.date,
+      customfield_13190: body.discipline,
+      customfield_13194: mappedDetails,
+      customfield_13203: { value: body.meetingType },
       ...(body.computePlatform1 !== "none"
         ? {
-            customfield_13089: {
+            customfield_13189: {
               value: body.computePlatform1,
               child: {
                 value: body.computePlatform2,
@@ -108,7 +108,7 @@ export default async function handler(req, res) {
         : {}),
       ...(body.storagePlatform1 !== "none"
         ? {
-            customfield_13095: {
+            customfield_13195: {
               value: body.storagePlatform1,
               child: {
                 value: body.storagePlatform2,
