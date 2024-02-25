@@ -165,7 +165,7 @@ export default function Home() {
       setCompleted(true);
       setSuccess(true);
       setTicket(
-        "https://jira-dev.admin.virginia.edu/browse/" +
+        "https://jira.admin.virginia.edu/browse/" +
           result.data.key
       );
     } else {
