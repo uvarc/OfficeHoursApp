@@ -24,7 +24,9 @@ export default function Home() {
 
   const rcStaff = [
     { value: "jus2yw", label: "Ahmad Sheikhzada" },
-    { value: "wac3aj", label: "Caitlin Jagla" },
+    { value: "aab5zd", label: "Angela Boakye" },
+    { value: "kjl5t", label: "Kathryn Linehan" },
+    { value: "gpd6kn", label: "Priyanka Prakash" },
     { value: "teh1m", label: "Ed Hall" },
     { value: "gka6a", label: "Gladys Andino" },
     { value: "jmh5ad", label: "Jackie Huband" },
