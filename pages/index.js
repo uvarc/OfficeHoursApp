@@ -143,8 +143,14 @@ export default function Home() {
     // Send the data to the server in JSON format.
     const JSONdata = JSON.stringify(data);
 
+    console.log("Started Request");
+
     // API endpoint where we send form data.
-    const endpoint = "/api/form";
+    // const endpoint = "/api/form";
+
+    // Redirects to current LDAP endpoint
+    // const endpoint = "http://localhost:5000/uvarc/api/ticket/officehours/create_ticket"
+    const endpoint = "https://uvarc-unified-service.pods.uvarc.io/uvarc/api/ticket/officehours/create_ticket"
 
     // Form the request for sending data to the server.
     const options = {
@@ -168,7 +174,7 @@ export default function Home() {
       setSuccess(true);
       setTicket(
         "https://jira.admin.virginia.edu/browse/" +
-          result.data.key
+          result.data.issueKey
       );
     } else {
       setSubmitting(false);
