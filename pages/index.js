@@ -9,6 +9,7 @@ import { Alert } from "react-bootstrap";
 import CascadingDropdownStorage from "./components/CascadingDropdownStorage";
 import CascadingDropdownCompute from "./components/CascadingDropdownCompute";
 import Select from "react-select";
+import { endpoint_url, rcStaff, detailOptions, disciplineOptions, meetingTypeOptions, requestTypeOptions } from "../constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,75 +22,6 @@ export default function Home() {
   const [errorMesg, setErrorMesg] = useState("");
   const [details, setDetails] = useState([]);
   const [staff, setStaff] = useState([]);
-
-  const rcStaff = [
-    { value: "jus2yw", label: "Ahmad Sheikhzada" },
-    { value: "aab5zd", label: "Angela Boakye" },
-    { value: "kjl5t", label: "Kathryn Linehan" },
-    { value: "gpd6kn", label: "Priyanka Prakash" },
-    { value: "teh1m", label: "Ed Hall" },
-    { value: "gka6a", label: "Gladys Andino" },
-    { value: "jmh5ad", label: "Jackie Huband" },
-    { value: "khs3z", label: "Karsten Siller" },
-    { value: "kah3f", label: "Katherine Holcomb" },
-    { value: "mb5wt", label: "Marcus Bobar" },
-    { value: "egg3xa", label: "Paul Orndorff" },
-    { value: "rs7wz", label: "Ruoshi Sun" },
-    { value: "cmd7ag", label: "Camden Duy" },
-    { value: "xve5kj", label: "Hana Parece" },
-  ];
-
-  const detailOptions = [
-    "System: Outage",
-    "System: Performance",
-    "Access: Allocation/account",
-    "Access: VPN",
-    "Access: SSH",
-    "Access: MobaXterm",
-    "Access: FastX",
-    "Access: OOD",
-    "Access: other",
-    "OOD: JupyterLab",
-    "OOD: RStudio",
-    "OOD: Matlab",
-    "OOD: Desktop",
-    "OOD: other",
-    "File Transfer: Globus",
-    "File Transfer: DTN",
-    "File Transfer: CLI tools",
-    "File Transfer: other",
-    "HW: Standard",
-    "HW: Parallel",
-    "HW: Largemem",
-    "HW: GPU",
-    "HW: Condo",
-    "HW: DB host",
-    "HW: other",
-    "Language: C/C++",
-    "Language: Fortran",
-    "Language: Python",
-    "Language: R",
-    "Language: Matlab",
-    "Language: Bash",
-    "Language: other",
-    "Domain: General HPC/Slurm",
-    "Domain: HPC Optimization & Parallelization",
-    "Domain: Software Installs/Containers",
-    "Domain: Software Development",
-    "Domain: Databases",
-    "Domain: AI/ML/DL",
-    "Domain: Data Science/Data Analytics",
-    "Domain: Bioinformatics",
-    "Domain: Image Processing",
-    "Domain: Computational Chemistry",
-    "Domain: Text Analysis",
-    "Domain: Physics",
-    "Documentation (answer not yet in documentation)",
-  ];
-
-  const detailOptionsWithLabel = detailOptions.map((option) => {
-    return { value: option, label: option };
-  });
 
   const handleSubmit = async (event) => {
     setSubmitting(true);
@@ -143,8 +75,13 @@ export default function Home() {
     // Send the data to the server in JSON format.
     const JSONdata = JSON.stringify(data);
 
+    console.log("Started Request");
+
     // API endpoint where we send form data.
-    const endpoint = "/api/form";
+    // const endpoint = "/api/form";
+
+    // Redirects to current LDAP endpoint
+    // const endpoint = "http://localhost:5000/uvarc/api/ticket/officehours/create_ticket"
 
     // Form the request for sending data to the server.
     const options = {
@@ -158,19 +95,19 @@ export default function Home() {
       body: JSONdata,
     };
     // Send the form data to our forms API on Vercel and get a response.
-    const response = await fetch(endpoint, options);
+    const response = await fetch(endpoint_url, options);
     // Get the response data from server as JSON.
     // If server returns the name submitted, that means the form works.
     if (response.status === 200) {
       const result = await response.json();
+      // replaces response url with browse for ticket notification
+      var ticket_url =  result.data._links.web.replace("servicedesk/customer/portal/46/","browse/").replace("servicedesk/customer/portal/34/","browse/")
       setSubmitting(false);
       setCompleted(true);
       setSuccess(true);
-      setTicket(
-        "https://jira.admin.virginia.edu/browse/" +
-          result.data.key
-      );
-    } else {
+      setTicket(ticket_url);
+    } 
+    else {
       setSubmitting(false);
       setCompleted(true);
       setError(true);
@@ -208,30 +145,16 @@ export default function Home() {
                     controlId="formDropDownDiscipline"
                   >
                     <Form.Label>Discipline</Form.Label>
-                    <Form.Select aria-label="Discipline">
-                      <option value="">Select Option</option>
-                      <option value="Astronomy">Astronomy</option>
-                      <option value="Biochemistry">Biochemistry</option>
-                      <option value="Bioinformatics">Bioinformatics</option>
-                      <option value="Biology">Biology</option>
-                      <option value="Business">Business</option>
-                      <option value="Chemistry">Chemistry</option>
-                      <option value="Commerce">Commerce</option>
-                      <option value="Computer Science">Computer Science</option>
-                      <option value="Data Science">Data Science</option>
-                      <option value="Economics">Economics</option>
-                      <option value="Education">Education</option>
-                      <option value="Environmental Science">
-                        Environmental Science
-                      </option>
-                      <option value="Engineering">Engineering</option>
-                      <option value="Health Sciences">Health Sciences</option>
-                      <option value="Informatics">Informatics</option>
-                      <option value="Law">Law</option>
-                      <option value="Physics">Physics</option>
-                      <option value="Social Sciences">Social Sciences</option>
-
-                      <option value="Other">Other</option>
+                    <Form.Select defaultValue="" aria-label="Discipline">
+                      {disciplineOptions.map(({ value, label, disabled }) => (
+                        <option
+                          key={value}
+                          value={value}
+                          disabled={disabled}
+                        >
+                          {label}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formRep">
@@ -252,12 +175,16 @@ export default function Home() {
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formDropDownMeeting">
                     <Form.Label>Meeting Type</Form.Label>
-                    <Form.Select aria-label="Meeting">
-                      <option value="Office Hours (walk-in)">Office Hours (walk-in)</option>
-                      <option value="Consultation (scheduled)">Consultation (scheduled)</option>
-                      <option value="Outreach Event (scheduled)">Outreach Event (scheduled)</option>
-                      <option value="Training">Training</option>
-                      <option value="Other">Other</option>
+                    <Form.Select defaultValue="" aria-label="Meeting">
+                      {meetingTypeOptions.map(({ value, label, disabled }) => (
+                        <option
+                          key={value}
+                          value={value}
+                          disabled={disabled}
+                        >
+                          {label}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formSummary">
@@ -266,14 +193,16 @@ export default function Home() {
                   </Form.Group>                  
                   <Form.Group className="mb-3" controlId="formDropDownRequestType">
                     <Form.Label>Request Type</Form.Label>
-                    <Form.Select aria-label="Request" required>
-                      <option value="">Select Option</option>
-                      <option value="Technical Support Tier 1">Technical Support Tier 1</option>
-                      <option value="Technical Support Tier 2">Technical Support Tier 2</option>
-                      <option value="Consulting Tier 1">Consulting Tier 1</option>
-                      <option value="Consulting Tier 2">Consulting Tier 2</option>
-                      <option value="Provisioning/Deprovisioning">Provisioning/Deprovisioning</option>
-                      <option value="Education/Outreach">Education/Outreach</option>
+                    <Form.Select defaultValue="" aria-label="Request" required>
+                      {requestTypeOptions.map(({ value, label, disabled }) => (
+                        <option
+                          key={value}
+                          value={value}
+                          disabled={disabled}
+                        >
+                          {label}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formDropDownCompute">
@@ -288,7 +217,7 @@ export default function Home() {
                     <Select
                       isMulti
                       name="formDropDownDetails"
-                      options={detailOptionsWithLabel}
+                      options={detailOptions}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       onChange={(option) => setDetails(option)}
