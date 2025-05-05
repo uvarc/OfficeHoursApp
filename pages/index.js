@@ -100,14 +100,14 @@ export default function Home() {
     // If server returns the name submitted, that means the form works.
     if (response.status === 200) {
       const result = await response.json();
+      // replaces response url with browse for ticket notification
+      var ticket_url =  result.data._links.web.replace("servicedesk/customer/portal/46/","browse/").replace("servicedesk/customer/portal/34/","browse/")
       setSubmitting(false);
       setCompleted(true);
       setSuccess(true);
-      setTicket(
-        "https://jira.admin.virginia.edu/browse/" +
-          result.data.issueKey
-      );
-    } else {
+      setTicket(ticket_url);
+    } 
+    else {
       setSubmitting(false);
       setCompleted(true);
       setError(true);
