@@ -1,5 +1,5 @@
 // Production URL
-export const endpoint_url = "https://uvarc-unified-service.pods.uvarc.io/uvarc/api/ticket/officehours/create_ticket"
+export const endpoint_url = "https://uvarc-unified-service-prod.pods.uvarc.io/uvarc/api/ticket/officehours/create_ticket"
 // Dev URL [uncomment when in dev environment]
 // export const endpoint_url = "http://localhost:5000/uvarc/api/ticket/officehours/create_ticket"
 
