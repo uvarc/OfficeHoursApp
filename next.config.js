@@ -4,8 +4,20 @@ const nextConfig = {
     // Enable server logs for Next.js API routes
     INTERNAL_API_LOGS: true,
   },
-  
+
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/workshops/attendance',
+        destination: '/html/workshops/index.html'
+      },
+      {
+        source: '/workshops/:path*',
+        destination: '/html/workshops/:path*'
+      }
+    ]
+  }
 }
 
 

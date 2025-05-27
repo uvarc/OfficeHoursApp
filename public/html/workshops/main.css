@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#tooltip {
+    position: fixed;
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    width: 600px;
+    display: none;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+#options {
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    width: 250px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+#options-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+#options-bottom {
+    text-align: center;
+}
+
+#survey-link {
+    color: white;
+}
+
+#main-container {
+    width: calc(100% - 250px);
+    display: flex;
+    flex-direction: column;
+}
+
+#charts {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#charts .chart {
+    position: absolute;
+    height: 100%;
+}
+
+#all-workshops {
+    position: absolute;
+    padding-bottom: 100vh;
+}
+
+input[type="date"] {
+    width: 110px;
+}
+
+#chart-select {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 5px;
+}
+
+#chart-select button {
+    width: 100%;
+}
+
+#chart-select button.active {
+    background-color: #ddd;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+button {
+    padding: 5px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr:first-child {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    display: table-row !important;
+}
+
+th {
+    padding: 10px;
+}
+
+td {
+    padding: 5px;
+}
+
+th:first-child,
+td:first-child {
+    padding-left: 20px;
+}
+
+th:last-child,
+td:last-child {
+    padding-right: 20px;
+}
+
+#save-load button {
+    width: 100%;
+}
+
+#save-load {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    width: 100%;
+}
+
+#stats {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 10px;
+}
+
+#stats p {
+    font-weight: bold;
+}
+
+#stats p span {
+    font-weight: normal;
+}
