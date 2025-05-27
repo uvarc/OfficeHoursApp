@@ -2,38 +2,28 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+To run the development server, you must first install node modules 
 
 ```bash
+npm install
 npm run dev
 # or
+yarn install
 yarn dev
 # or
+pnpm install
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/](http://localhost:3000/api/).
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-This project requires an env for the following variables:
-```bash
-LDAP_API_KEY
-JIRA_API_KEY
 ```
 
-## Project Structure
+## Project Structure 
 
 `pages/index.js` is where the form for user input is generated. It uses the `components` directory to generate more complex 
 dropdowns.
-
-`pages/api/form.js` is the only API route in this project. It is responsible for taking the user input and generating the 
-appropriate JQL query to send to the JIRA API. It also uses the [LDAP API](https://github.com/uvarc/ldap-api) to get the department and school for the visitor. 
 
 ## TO DO
 
