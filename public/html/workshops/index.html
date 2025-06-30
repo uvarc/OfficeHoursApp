@@ -12,6 +12,21 @@
     <main>
         <div id="main-container">
             <div id="charts"></div>
+            <div id="legend">
+                <ul id="legend-list">
+                    <li class="legend-item" style="color: #798db8"><span>Attendees</span></li>
+                    <li class="legend-item" style="color: #ff9080"><span>Registrations</span></li>
+                    <li class="legend-item" style="color: #ffdbdb"><span>Capacity</span></li>
+                </ul>
+                <ul id="legend-list">
+                    <li class="legend-item" style="color: rgba(220, 255, 174, 0.75)"><span>Spring</span></li>
+                    <li class="legend-item" style="color: rgba(255, 255, 127, 0.65)"><span>Summer</span></li>
+                    <li class="legend-item" style="color: rgba(255, 194, 128, 0.75)"><span>Fall</span></li>
+                </ul>
+                <ul id="legend-list">
+                    <li class="legend-item striped bordered" style="color: #ffffff"><span>Morning</span></li>
+                    <li class="legend-item striped bordered" style="color: #d0d0d0"><span>Afternoon</span></li>
+            </div>
             <div id="stats">
                 <p>Workshops: <span id="total-workshops"></span></p>
                 <p>Attendees: <span><span id="total-attendees"></span>/<span id="total-registrations"></span>
@@ -59,7 +74,6 @@
                 </div>
 
                 <div id="chart-select"></div>
-                <button id="refresh">Refresh Data</button>
                 <button id="make-new-chart">Make New Chart</button>
 
                 <div id="save-load">
@@ -68,7 +82,7 @@
                 </div>
             </div>
             <div id="options-bottom">
-                <a id="survey-link" href="/survey">Survey Visualization ></a>
+                <a id="survey-link" href="/workshops/survey">Survey Visualization ></a>
             </div>
         </div>
     </main>

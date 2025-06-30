@@ -17,13 +17,6 @@ let currentFilters = {
 
 let workshopData = null;
 
-document.getElementById('refresh').addEventListener('click', async () => {
-    const res = await fetch(backendUrl + '/refresh');
-
-    if ((await res.json()).refreshed)
-        refresh();
-});
-
 Chart.Tooltip.positioners.bottom = function (elements, eventPosition) {
     const pos = Chart.Tooltip.positioners.average(elements);
 
@@ -39,7 +32,7 @@ Chart.Tooltip.positioners.bottom = function (elements, eventPosition) {
 async function refresh() {
     allWorkshopsDiv.innerHTML = '';
 
-    const response = await fetch(backendUrl + '/data/workshop');
+    const response = await fetch(backendUrl + '/uvarc/api/workshops/attendance/data');
     const data = await response.json();
 
     data.map(row => {
@@ -156,6 +149,20 @@ function buildChart(ctxId, filtersArray) {
     return ctx;
 }
 
+function dateToSemester(date) {
+    const month = date.getMonth();
+    let period = '';
+    if (month >= 0 && month <= 4) {
+        period = 'Spr';
+    } else if (month >= 5 && month <= 7) {
+        period = 'Sum';
+    } else if (month >= 8 && month <= 11) {
+        period = 'Fall';
+    }
+
+    return `${period}${date.getFullYear() % 100}`;
+}
+
 function createChart(data, ctxId) {
     let ctx = document.getElementById(ctxId);
 
@@ -170,7 +177,7 @@ function createChart(data, ctxId) {
         id: ctxId,
         type: 'bar',
         data: {
-            labels: data.map(row => row['title']),
+            labels: data.map(row => `${row['title']} (${dateToSemester(row['start'])})`),
             datasets: [{
                 label: 'Attendees',
                 data: data.map(row => row['processed_attendance'] ?? row['attendance']),
@@ -271,10 +278,13 @@ function createChart(data, ctxId) {
                 },
                 title: {
                     display: true,
-                    text: 'RC Workshops Spring 2024–Spring 2025',
+                    text: 'RC Workshops Spring 2024–Summer 2025',
                     font: {
-                        size: 20
+                        size: 25
                     }
+                },
+                legend: {
+                    display: false
                 },
                 tooltip: {
                     xAlign: 'center',
@@ -595,7 +605,3 @@ document.getElementById('save').addEventListener('click', saveCharts);
 document.getElementById('load').addEventListener('click', loadCharts);
 
 refresh();
-
-window.addEventListener('load', () => {
-    document.getElementById('refresh').click();
-});

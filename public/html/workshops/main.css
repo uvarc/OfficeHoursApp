@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 #tooltip {
@@ -161,4 +162,46 @@ td:last-child {
 
 #stats p span {
     font-weight: normal;
+}
+
+#legend {
+    padding: 10px;
+    margin: 10px;
+}
+
+#legend-list {
+    display: inline-block;
+    gap: 1.5em;
+    margin: 20px 0;
+    border: 1px solid black;
+}
+
+#legend-list .legend-item {
+    list-style: none;
+    padding: 0.5em;
+}
+
+#legend-list .legend-item::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    background-color: currentColor;
+}
+
+#legend-list .legend-item span {
+    color: black;
+    margin-left: 5px;
+    vertical-align: 25%;
+}
+
+.legend-item.bordered::before {
+    border: 1px solid black;
+}
+
+.legend-item.striped::before {
+    background-color: transparent !important;
+    background-image: linear-gradient(0deg, currentColor 25%, transparent 25%, transparent 50%, currentColor 50%, currentColor 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
 }
