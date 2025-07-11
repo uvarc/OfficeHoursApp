@@ -173,6 +173,9 @@ function createChart(data, ctxId) {
         charts[ctxId].destroy();
     }
 
+    const firstDate = new Date(data[0].start);
+    const lastDate = new Date(data[data.length - 1].end);
+
     charts[ctxId] = new Chart(ctx, {
         id: ctxId,
         type: 'bar',
@@ -278,7 +281,7 @@ function createChart(data, ctxId) {
                 },
                 title: {
                     display: true,
-                    text: 'RC Workshops Spring 2024–Summer 2025',
+                    text: `RC Workshops ${dateToSemester(firstDate)}–${dateToSemester(lastDate)}`,
                     font: {
                         size: 25
                     }
