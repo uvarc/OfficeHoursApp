@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Data</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        main {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            width: 100%;
+            padding: 1rem;
+            height: 100vh;
+            justify-content: space-evenly;
+        }
+
+        main>div {
+            width: 100%;
+        }
+
+        tr:first-child {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            display: table-row !important;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            padding: 10px;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        th:first-child,
+        td:first-child {
+            padding-left: 20px;
+        }
+
+        th:last-child,
+        td:last-child {
+            padding-right: 20px;
+        }
+
+        #bottom-right-options {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: fit-content;
+            padding: 10px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            padding: 5px;
+            background-color: black;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        button:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div>
+            <canvas id="topics-chart"></canvas>
+        </div>
+        <div>
+            <canvas id="positions-chart"></canvas>
+        </div>
+        <div>
+            <canvas id="departments-chart"></canvas>
+        </div>
+
+        <div id="bottom-right-options">
+            <label for="finished-only">
+                Finished Surveys Only?
+                <input type="checkbox" name="finished-only" id="finished-only" checked>
+            </label>
+            <a id="workshop-link" href="/workshops/attendance">&lt; Workshop Visualization</a>
+        </div>
+    </main>
+
+    <table id="allResponses"></table>
+
+    <script src="/workshops/chart.js"></script>
+    <script src="/workshops/chartjs-plugin-labels.js"></script>
+    <script src="/workshops/survey.js"></script>
+</body>
+
+</html>
