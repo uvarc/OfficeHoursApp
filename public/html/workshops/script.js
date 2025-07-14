@@ -4,7 +4,7 @@ const charts = {};
 const filters = {};
 const allWorkshopsDiv = document.getElementById('all-workshops');
 
-const backendUrl = 'http://localhost:5000';
+const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
 
 let currentCtxId = 'chart';
 

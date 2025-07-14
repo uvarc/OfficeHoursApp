@@ -1,6 +1,6 @@
 const allResponsesDiv = document.getElementById('allResponses');
 
-const backendUrl = 'http://localhost:5000';
+const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
 
 const charts = {};
 
