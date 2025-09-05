@@ -114,7 +114,9 @@ function getValueCounts(data, key) {
 let data = [];
 
 async function refresh() {
-    const response = await fetch(backendUrl + '/uvarc/api/workshops/survey/data');
+    const response = await fetch(backendUrl + '/uvarc/api/workshops/survey/data', {
+        method: "POST"
+    });
     data = await response.json();
 }
 
