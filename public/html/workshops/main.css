@@ -43,8 +43,10 @@ main {
     text-align: center;
 }
 
+#departments-link,
 #survey-link {
     color: white;
+    display: block;
 }
 
 #main-container {
