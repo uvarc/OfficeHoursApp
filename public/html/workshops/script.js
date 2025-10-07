@@ -5,6 +5,7 @@ const filters = {};
 const allWorkshopsDiv = document.getElementById('all-workshops');
 
 // const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
+// const backendUrl = 'https://uvarc-unified-service-test.pods.uvarc.io';
 const backendUrl = 'http://localhost:5000';
 
 let currentCtxId = 'chart';
@@ -174,14 +175,16 @@ function createChart(data, ctxId) {
         charts[ctxId].destroy();
     }
 
-    const firstDate = new Date(data[0].start);
-    const lastDate = new Date(data[data.length - 1].end);
+    document.getElementById('charts-wrapper').style.width = (data.length * 100 + 200) + 'px';
+
+    const firstDate = data[0].start ? new Date(data[0].start) : null;
+    const lastDate = data[data.length - 1].end ? new Date(data[data.length - 1].end) : null;
 
     charts[ctxId] = new Chart(ctx, {
         id: ctxId,
         type: 'bar',
         data: {
-            labels: data.map(row => `${row['title']} (${dateToSemester(row['start'])})`),
+            labels: data.map(row => `${row['title']} ${row['start'] ? "(" + dateToSemester(row['start']) + ")" : ""}`),
             datasets: [{
                 label: 'Attendees',
                 data: data.map(row => row['processed_attendance'] ?? row['attendance']),
@@ -262,13 +265,15 @@ function createChart(data, ctxId) {
             }
         }, ChartDataLabels],
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             interaction: {
                 mode: 'index'
             },
             layout: {
-                padding: {
-                    bottom: 80
-                }
+                // padding: {
+                //     bottom: 80
+                // }
             },
             plugins: {
                 datalabels: {
@@ -281,8 +286,8 @@ function createChart(data, ctxId) {
                     }
                 },
                 title: {
-                    display: true,
-                    text: `RC Workshops ${dateToSemester(firstDate)}–${dateToSemester(lastDate)}`,
+                    display: false,
+                    text: `RC Workshops ${firstDate ? dateToSemester(firstDate) + "-" + dateToSemester(lastDate) : ""}`,
                     font: {
                         size: 25
                     }
@@ -323,8 +328,8 @@ function createChart(data, ctxId) {
                     stacked: true,
                     ticks: {
                         autoSkip: false,
-                        maxRotation: 90,
-                        minRotation: 60,
+                        // maxRotation: 90,
+                        // minRotation: 60,
                     }
                 },
                 y: {
