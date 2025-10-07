@@ -175,6 +175,8 @@ function createChart(data, ctxId) {
         charts[ctxId].destroy();
     }
 
+    document.getElementById('charts-wrapper').style.width = (data.length * 100 + 200) + 'px';
+
     const firstDate = new Date(data[0].start);
     const lastDate = new Date(data[data.length - 1].end);
 
@@ -192,12 +194,12 @@ function createChart(data, ctxId) {
 
     const departmentColors = {};
     const colorPalette = [
-        '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
-        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
-        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
-        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+        '#FF6633', '#FFB399', '#FF33FF', '#00B3E6', '#3366E6',
+        '#999966', '#99FF99', '#B34D4D', '#80B300', '#E6B3B3',
+        '#6680B3', '#66991A', '#FF99E6', '#CCFF1A', '#FF1A66',
+        '#E6331A', '#33FFCC', '#66994D', '#B366CC', '#4D8000',
+        '#B33300', '#CC80CC', '#66664D', '#991AFF', '#E666FF',
+        '#4DB3FF', '#1AB399',
     ];
 
     departments.forEach((dept, index) => {
@@ -282,13 +284,15 @@ function createChart(data, ctxId) {
             }
         }, ChartDataLabels],
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             interaction: {
                 mode: 'index'
             },
             layout: {
-                padding: {
-                    bottom: 80
-                }
+                // padding: {
+                //     bottom: 80
+                // }
             },
             plugins: {
                 datalabels: {
@@ -301,7 +305,7 @@ function createChart(data, ctxId) {
                     }
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: `RC Workshops ${dateToSemester(firstDate)}–${dateToSemester(lastDate)}`,
                     font: {
                         size: 25
@@ -343,8 +347,8 @@ function createChart(data, ctxId) {
                     stacked: true,
                     ticks: {
                         autoSkip: false,
-                        maxRotation: 90,
-                        minRotation: 60,
+                        // maxRotation: 90,
+                        // minRotation: 60,
                     }
                 },
                 y: {
