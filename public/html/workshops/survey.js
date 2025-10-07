@@ -1,7 +1,7 @@
 const allResponsesDiv = document.getElementById('allResponses');
 
-// const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
-const backendUrl = 'https://uvarc-unified-service-test.pods.uvarc.io';
+const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
+// const backendUrl = 'https://uvarc-unified-service-test.pods.uvarc.io';
 // const backendUrl = 'http://localhost:5000';
 
 const charts = {};
