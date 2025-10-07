@@ -11,25 +11,9 @@
 <body>
     <main>
         <div id="main-container">
-            <div id="header">
-                <h1>RC Workshops Data Visualization</h1>
-                <p>
-                    This page visualizes data from RC workshops. You can filter workshops using the options on the right
-                    and create multiple charts to compare different sets of workshops. Hover over chart elements to see
-                    details.
-                </p>
-                <p><a href="/workshops/departments">Department Workshops Visualization ></a></p>
-            </div>
-            <div id="charts-outer-wrapper">
-                <div id="charts-wrapper">
-                    <div id="charts"></div>
-                </div>
-            </div>
+            <div id="charts"></div>
             <div id="legend">
                 <ul class="legend-list">
-                    <li class="legend-item" style="color: #798db8"><span>Attendees</span></li>
-                    <li class="legend-item" style="color: #ff9080"><span>Registrations</span></li>
-                    <li class="legend-item" style="color: #ffdbdb"><span>Capacity</span></li>
                 </ul>
                 <ul class="legend-list">
                     <li class="legend-item" style="color: rgba(220, 255, 174, 0.75)"><span>Spring</span></li>
@@ -113,7 +97,7 @@
 
     <script src="/workshops/chart.js"></script>
     <script src="/workshops/chartjs-plugin-datalabels@2.js"></script>
-    <script src="/workshops/script.js"></script>
+    <script src="/workshops/departments.js"></script>
 </body>
 
 </html>

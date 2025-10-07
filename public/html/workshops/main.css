@@ -51,6 +51,23 @@ main {
     width: calc(100% - 250px);
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+}
+
+#charts-outer-wrapper {
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    position: relative;
+}
+
+#charts-wrapper {
+    height: 100%;
+    /* width: 5000px; */
+    min-width: 100%;
+    overflow-x: auto;
+    position: relative;
+    overflow: hidden;
 }
 
 #charts {
@@ -62,7 +79,22 @@ main {
 
 #charts .chart {
     position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 100%;
+}
+
+#header {
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 10px;
+}
+
+#header a {
+    color: white;
+    /* text-decoration: none; */
 }
 
 #all-workshops {
@@ -169,19 +201,19 @@ td:last-child {
     margin: 10px;
 }
 
-#legend-list {
+.legend-list {
     display: inline-block;
     gap: 1.5em;
     margin: 20px 0;
     border: 1px solid black;
 }
 
-#legend-list .legend-item {
+.legend-list .legend-item {
     list-style: none;
     padding: 0.5em;
 }
 
-#legend-list .legend-item::before {
+.legend-list .legend-item::before {
     content: '';
     width: 20px;
     height: 20px;
@@ -190,7 +222,7 @@ td:last-child {
     background-color: currentColor;
 }
 
-#legend-list .legend-item span {
+.legend-list .legend-item span {
     color: black;
     margin-left: 5px;
     vertical-align: 25%;

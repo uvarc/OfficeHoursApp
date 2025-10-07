@@ -1,6 +1,8 @@
 const allResponsesDiv = document.getElementById('allResponses');
 
-const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
+// const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
+const backendUrl = 'https://uvarc-unified-service-test.pods.uvarc.io';
+// const backendUrl = 'http://localhost:5000';
 
 const charts = {};
 
@@ -13,12 +15,24 @@ function createChart(surveys, id, title, chartType) {
 
     // replace school names with abbreviations
     const schoolAbbreviations = {
-        'College and Graduate School of Arts & Sciences': 'The College',
-        'Frank Batten School of Leadership and Public Policy': 'Batten',
-        'Darden School of Business': 'Darden',
-        'School of Data Science': 'Data Science',
-        'McIntire School of Commerce': 'McIntire',
-    }
+        'College and Graduate School of Arts & Sciences': 'AS',
+        'Darden School of Business': 'DA',
+        'Frank Batten School of Leadership and Public Policy': 'BA',
+        'McIntire School of Commerce': 'MC',
+        'School of Architecture': 'AR',
+        'School of Continuing & Professional Studies': 'CP',
+        'School of Data Science': 'DS',
+        'School of Education and Human Development': 'ED',
+        'School of Engineering and Applied Science': 'EN',
+        'School of Law': 'LW',
+        'School of Medicine': 'MD',
+        'School of Nursing': 'NU',
+        'UVA Wise': 'Wise',
+    };
+
+    const invertedAbbreviations = Object.fromEntries(
+        Object.entries(schoolAbbreviations).map(([key, value]) => [value, key])
+    );
 
     const abbreviate = (name) => {
         if (name in schoolAbbreviations) {
@@ -46,6 +60,7 @@ function createChart(surveys, id, title, chartType) {
     };
 
     const options = {
+        indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -69,20 +84,36 @@ function createChart(surveys, id, title, chartType) {
                 render: 'label',
                 fontSize: 20,
             } : undefined,
+            tooltip: {
+                callbacks: {
+                    title: function (context) {
+                        return invertedAbbreviations[context[0].label] ?? context[0].label;
+                    },
+                    // label: function (context) {
+                    //     const label = context.dataset.label || '';
+                    //     const value = context.parsed || 0;
+                    //     return `${label}: ${value}`;
+                    // }
+                }
+            }
         }, scales: {
             x: chartType == 'bar' ? {
                 stacked: true,
                 ticks: {
                     autoSkip: false,
-                    maxRotation: 90,
-                    minRotation: 90,
                     font: {
                         size: 16
                     }
                 }
             } : undefined,
             y: chartType == 'bar' ? {
-                beginAtZero: true
+                beginAtZero: true,
+                ticks: {
+                    autoSkip: false,
+                    font: {
+                        size: 16
+                    }
+                }
             } : undefined,
         },
     };
@@ -136,6 +167,22 @@ function displayData(data) {
 
     const unusedHeaders = ['ResponseId', 'RecordedDate', 'Finished', 'Progress', 'Duration (in seconds)', 'Q3A'];
 
+    const topicTransformations = {
+        'Deep Learning/Neural Networks': 'Deep Learning/Neural Networks',
+        'High Performance Computing': 'High Performance Computing',
+        'Matlab': 'Matlab',
+        'Programming (Julia, C, C++, OpenMP, Fortran etc.)': 'Programming',
+        'Python': 'Python',
+        'Shiny': 'Shiny',
+        'Data transfer with Globus': 'Data Transfer with Globus',
+        'Applications (Deploying Web Apps for Publication)': 'Web Applications',
+        'Containers (Building and Using Containers)': 'Containers',
+        'R': 'R',
+        'Computational Biophysics/Chemistry (drug discovery, large-scale bio-molecular simulations)': 'Computational Biophysics/Chemistry',
+        'Bioinformatics': 'Bioinformatics',
+        'Other': 'Other',
+    }
+
     Object.keys(data[0]).forEach(header => {
         if (unusedHeaders.includes(header))
             return;
@@ -184,7 +231,7 @@ function displayData(data) {
     const topicsCounts = {};
     data.forEach(row => {
         row['Q3'].forEach(topic => {
-            topicsCounts[topic] = (topicsCounts[topic] || 0) + 1;
+            topicsCounts[topicTransformations[topic] ?? topic] = (topicsCounts[topic] || 0) + 1;
         });
     });
     createChart(topicsCounts, 'topics-chart', 'Topics', 'bar');

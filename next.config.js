@@ -17,6 +17,10 @@ const nextConfig = {
         destination: '/html/workshops/survey.html'
       },
       {
+        source: '/workshops/departments',
+        destination: '/html/workshops/departments.html'
+      },
+      {
         source: '/workshops/:path*',
         destination: '/html/workshops/:path*'
       }

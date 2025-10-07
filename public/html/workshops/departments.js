@@ -175,39 +175,56 @@ function createChart(data, ctxId) {
         charts[ctxId].destroy();
     }
 
-    document.getElementById('charts-wrapper').style.width = (data.length * 100 + 200) + 'px';
+    const firstDate = new Date(data[0].start);
+    const lastDate = new Date(data[data.length - 1].end);
 
-    const firstDate = data[0].start ? new Date(data[0].start) : null;
-    const lastDate = data[data.length - 1].end ? new Date(data[data.length - 1].end) : null;
+    // Get all different departments that attended each workshop
+    const departmentSet = new Set();
+    data.forEach(row => {
+        row.registrations.forEach(reg => {
+            if (reg.department) {
+                departmentSet.add(reg.department);
+            }
+        });
+    });
+
+    const departments = Array.from(departmentSet).sort((a, b) => a > b ? 1 : -1);
+
+    const departmentColors = {};
+    const colorPalette = [
+        '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+    ];
+
+    departments.forEach((dept, index) => {
+        departmentColors[dept] = colorPalette[index % colorPalette.length];
+    });
+
+    const chartDatasets = departments.map(dept => ({
+        label: dept,
+        data: data.map(row => {
+            const regInDept = row.registrations.filter(reg => reg.department === dept);
+            const totalAttendance = regInDept.reduce((acc, reg) => acc + reg.attendance, 0);
+            return totalAttendance;
+        }),
+        backgroundColor: departmentColors[dept],
+        datalabels: {
+            labels: {
+                title: null
+            }
+        },
+    }));
 
     charts[ctxId] = new Chart(ctx, {
         id: ctxId,
         type: 'bar',
         data: {
-            labels: data.map(row => `${row['title']} ${row['start'] ? "(" + dateToSemester(row['start']) + ")" : ""}`),
-            datasets: [{
-                label: 'Attendees',
-                data: data.map(row => row['processed_attendance'] ?? row['attendance']),
-                backgroundColor: '#798db8',
-                datalabels: {
-                    labels: {
-                        title: null
-                    }
-                },
-            }, {
-                label: 'Registrations',
-                data: data.map(row => row['processed_seats_taken'] ?? row['seats_taken']),
-                backgroundColor: '#ff9080',
-                datalabels: {
-                    labels: {
-                        title: null
-                    }
-                },
-            }, {
-                label: 'Capacity',
-                data: data.map(row => row['processed_seats'] ?? row['seats']),
-                backgroundColor: '#ffdbdb'
-            }]
+            labels: data.map(row => `${row['title']} (${dateToSemester(row['start'])})`),
+            datasets: chartDatasets
         },
         plugins: [{
             id: 'CustomCanvasColor',
@@ -265,15 +282,13 @@ function createChart(data, ctxId) {
             }
         }, ChartDataLabels],
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
             interaction: {
                 mode: 'index'
             },
             layout: {
-                // padding: {
-                //     bottom: 80
-                // }
+                padding: {
+                    bottom: 80
+                }
             },
             plugins: {
                 datalabels: {
@@ -286,14 +301,14 @@ function createChart(data, ctxId) {
                     }
                 },
                 title: {
-                    display: false,
-                    text: `RC Workshops ${firstDate ? dateToSemester(firstDate) + "-" + dateToSemester(lastDate) : ""}`,
+                    display: true,
+                    text: `RC Workshops ${dateToSemester(firstDate)}–${dateToSemester(lastDate)}`,
                     font: {
                         size: 25
                     }
                 },
                 legend: {
-                    display: false
+                    display: true
                 },
                 tooltip: {
                     xAlign: 'center',
@@ -309,7 +324,7 @@ function createChart(data, ctxId) {
                             }
                         },
                         label: context => {
-                            return null;
+                            return `Attendees from ${context.dataset.label}: ${context.formattedValue}`;
                         },
                         footer: context => {
                             if (currentFilters.categorize) {
@@ -328,8 +343,8 @@ function createChart(data, ctxId) {
                     stacked: true,
                     ticks: {
                         autoSkip: false,
-                        // maxRotation: 90,
-                        // minRotation: 60,
+                        maxRotation: 90,
+                        minRotation: 60,
                     }
                 },
                 y: {
