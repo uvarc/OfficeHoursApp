@@ -169,19 +169,19 @@ td:last-child {
     margin: 10px;
 }
 
-#legend-list {
+.legend-list {
     display: inline-block;
     gap: 1.5em;
     margin: 20px 0;
     border: 1px solid black;
 }
 
-#legend-list .legend-item {
+.legend-list .legend-item {
     list-style: none;
     padding: 0.5em;
 }
 
-#legend-list .legend-item::before {
+.legend-list .legend-item::before {
     content: '';
     width: 20px;
     height: 20px;
@@ -190,7 +190,7 @@ td:last-child {
     background-color: currentColor;
 }
 
-#legend-list .legend-item span {
+.legend-list .legend-item span {
     color: black;
     margin-left: 5px;
     vertical-align: 25%;

@@ -18,7 +18,7 @@
             width: 100%;
         }
 
-        main {
+        .main {
             display: flex;
             flex-direction: row;
             gap: 1rem;
@@ -28,7 +28,7 @@
             justify-content: space-evenly;
         }
 
-        main>div {
+        .main>div {
             width: 100%;
         }
 
@@ -62,7 +62,7 @@
 
         #bottom-right-options {
             position: absolute;
-            bottom: 0;
+            bottom: -100vh;
             right: 0;
             width: fit-content;
             padding: 10px;
@@ -89,14 +89,18 @@
 
 <body>
     <main>
-        <div>
-            <canvas id="topics-chart"></canvas>
+        <div class="main">
+            <div>
+                <canvas id="topics-chart"></canvas>
+            </div>
         </div>
-        <div>
-            <canvas id="positions-chart"></canvas>
-        </div>
-        <div>
-            <canvas id="departments-chart"></canvas>
+        <div class="main">
+            <div>
+                <canvas id="positions-chart"></canvas>
+            </div>
+            <div>
+                <canvas id="departments-chart"></canvas>
+            </div>
         </div>
 
         <div id="bottom-right-options">
