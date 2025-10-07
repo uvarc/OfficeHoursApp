@@ -182,8 +182,8 @@ function createChart(data, ctxId) {
     const departmentSet = new Set();
     data.forEach(row => {
         row.registrations.forEach(reg => {
-            if (reg.department) {
-                departmentSet.add(reg.department);
+            if (reg.school) {
+                departmentSet.add(reg.school);
             }
         });
     });
@@ -207,7 +207,7 @@ function createChart(data, ctxId) {
     const chartDatasets = departments.map(dept => ({
         label: dept,
         data: data.map(row => {
-            const regInDept = row.registrations.filter(reg => reg.department === dept);
+            const regInDept = row.registrations.filter(reg => reg.school === dept);
             const totalAttendance = regInDept.reduce((acc, reg) => acc + reg.attendance, 0);
             return totalAttendance;
         }),
