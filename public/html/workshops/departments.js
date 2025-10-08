@@ -589,12 +589,12 @@ document.getElementById('graph-type').addEventListener('change', (event) => {
     filterTable(workshopData, currentFilters);
 });
 
-document.getElementById('categorize').addEventListener('change', (event) => {
-    const categorize = event.target.checked;
-    currentFilters.categorize = categorize;
-    createChart(filter(workshopData, currentFilters), currentCtxId);
-    filterTable(workshopData, currentFilters);
-});
+// document.getElementById('categorize').addEventListener('change', (event) => {
+//     const categorize = event.target.checked;
+//     currentFilters.categorize = categorize;
+//     createChart(filter(workshopData, currentFilters), currentCtxId);
+//     filterTable(workshopData, currentFilters);
+// });
 
 document.getElementById('tags').addEventListener('change', (event) => {
     const tags = event.target.value;
