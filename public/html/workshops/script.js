@@ -4,9 +4,8 @@ const charts = {};
 const filters = {};
 const allWorkshopsDiv = document.getElementById('all-workshops');
 
-const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
+const backendUrl = window.location.origin === 'http://localhost:3000' ? 'http://localhost:5000' : 'https://uvarc-unified-service-prod.pods.uvarc.io';
 // const backendUrl = 'https://uvarc-unified-service-test.pods.uvarc.io';
-// const backendUrl = 'http://localhost:5000';
 
 let currentCtxId = 'chart';
 

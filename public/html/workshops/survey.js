@@ -1,8 +1,7 @@
 const allResponsesDiv = document.getElementById('allResponses');
 
-const backendUrl = 'https://uvarc-unified-service-prod.pods.uvarc.io';
+const backendUrl = window.location.origin === 'http://localhost:3000' ? 'http://localhost:5000' : 'https://uvarc-unified-service-prod.pods.uvarc.io';
 // const backendUrl = 'https://uvarc-unified-service-test.pods.uvarc.io';
-// const backendUrl = 'http://localhost:5000';
 
 const charts = {};
 
@@ -251,6 +250,8 @@ function displayFilteredData(checked) {
     if (finishedOnly) {
         newData = data.filter(item => item.Finished === 'True');
     }
+
+    document.getElementById('response-count').innerText = newData.length;
 
     displayData(newData);
 }
