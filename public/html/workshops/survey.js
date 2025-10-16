@@ -236,10 +236,10 @@ function displayData(data) {
     createChart(topicsCounts, 'topics-chart', 'Topics', 'bar');
 
     const positionsCounts = getValueCounts(data, 'Q1');
-    createChart(positionsCounts, 'positions-chart', 'Positions', 'pie');
+    createChart(positionsCounts, 'positions-chart', 'Role', 'pie');
 
     const departmentsCounts = getValueCounts(data, 'Q2');
-    createChart(departmentsCounts, 'departments-chart', 'Departments', 'pie');
+    createChart(departmentsCounts, 'departments-chart', 'Schools', 'pie');
 }
 
 function displayFilteredData(checked) {
