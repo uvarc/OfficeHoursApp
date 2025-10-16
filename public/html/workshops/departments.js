@@ -343,7 +343,7 @@ function createChart(data, ctxId) {
             },
             scales: {
                 x: {
-                    stacked: true,
+                    // stacked: true,
                     ticks: {
                         autoSkip: false,
                         // maxRotation: 90,
