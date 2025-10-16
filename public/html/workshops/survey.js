@@ -14,19 +14,19 @@ function createChart(surveys, id, title, chartType) {
 
     // replace school names with abbreviations
     const schoolAbbreviations = {
-        'College and Graduate School of Arts & Sciences': 'AS',
-        'Darden School of Business': 'DA',
-        'Frank Batten School of Leadership and Public Policy': 'BA',
-        'McIntire School of Commerce': 'MC',
-        'School of Architecture': 'AR',
-        'School of Continuing & Professional Studies': 'CP',
-        'School of Data Science': 'DS',
-        'School of Education and Human Development': 'ED',
-        'School of Engineering and Applied Science': 'EN',
-        'School of Law': 'LW',
-        'School of Medicine': 'MD',
-        'School of Nursing': 'NU',
-        'UVA Wise': 'Wise',
+        'College and Graduate School of Arts & Sciences [AS]': 'AS',
+        'Darden School of Business [DA]': 'DA',
+        'Frank Batten School of Leadership and Public Policy [BA]': 'BA',
+        'McIntire School of Commerce [MC]': 'MC',
+        'School of Architecture [AR]': 'AR',
+        'School of Continuing & Professional Studies [CP]': 'CP',
+        'School of Data Science [DS]': 'DS',
+        'School of Education and Human Development [ED]': 'ED',
+        'School of Engineering and Applied Science [EN]': 'EN',
+        'School of Law [LW]': 'LW',
+        'School of Medicine [MD]': 'MD',
+        'School of Nursing [NU]': 'NU',
+        'UVA Wise [Wise]': 'Wise',
     };
 
     const invertedAbbreviations = Object.fromEntries(
