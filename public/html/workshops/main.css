@@ -239,3 +239,34 @@ td:last-child {
     background-image: linear-gradient(0deg, currentColor 25%, transparent 25%, transparent 50%, currentColor 50%, currentColor 75%, transparent 75%, transparent);
     background-size: 20px 20px;
 }
+
+.loading {
+    font-size: 1.5em;
+}
+
+/* if has a sibling, hide .loading */
+.loading:has(+ canvas) {
+    display: none;
+}
+
+#legend-container {
+    display: inline-block;
+    gap: 1.5em;
+    margin-top: 20px;
+    /* border: 1px solid black; */
+}
+
+#legend-container .legend-item {
+    list-style: none;
+    padding: 0.5em;
+    display: inline-block;
+}
+
+#legend-container .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+}

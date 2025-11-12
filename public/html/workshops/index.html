@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workshop Data Visualization</title>
     <link rel="stylesheet" href="/workshops/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -16,13 +17,17 @@
                 <p>
                     This page visualizes data from RC workshops. You can filter workshops using the options on the right
                     and create multiple charts to compare different sets of workshops. Hover over chart elements to see
-                    details.
+                    details. Each bar shows three numbers, separated by slashes: attendees, registrations, and capacity.
                 </p>
                 <p><a href="/workshops/departments">Department Workshops Visualization ></a></p>
             </div>
             <div id="charts-outer-wrapper">
                 <div id="charts-wrapper">
-                    <div id="charts"></div>
+                    <div id="charts">
+                        <div class="loading">
+                            <i class="fa fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="legend">
@@ -59,6 +64,8 @@
 
                 <input type="text" name="time" id="time" placeholder="Time (24h)">
 
+                <input type="text" name="presenter" id="presenter" placeholder="Presenter">
+
                 <input type="text" name="tags" id="tags" placeholder="Tags">
 
                 <div>
@@ -68,10 +75,17 @@
                 </div>
 
                 <div>
+                    <input type="number" name="min-attendance" id="min-attendance" placeholder="0" min="0" max="100">
+                    -
+                    <input type="number" name="max-attendance" id="max-attendance" placeholder="100" min="0" max="100">
+                    % Attendance
+                </div>
+
+                <div>
                     <label for="graph-type">Graph Type:</label>
                     <select id="graph-type">
                         <option value="count" selected>Count</option>
-                        <!-- <option value="percentage">Percentage</option> -->
+                        <option value="percentage">Percentage</option>
                     </select>
                 </div>
 
@@ -88,10 +102,15 @@
 
                 <div id="chart-select"></div>
                 <button id="make-new-chart">Make New Chart</button>
+                <button id="delete-current-chart">Delete Current Chart</button>
 
                 <div id="save-load">
                     <button id="save">Save</button>
                     <button id="load">Load</button>
+                </div>
+
+                <div id="refresh-container">
+                    <button id="refresh-data">Refresh Data</button>
                 </div>
             </div>
             <div id="options-bottom">

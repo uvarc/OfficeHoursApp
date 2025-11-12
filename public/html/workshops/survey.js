@@ -5,29 +5,29 @@ const backendUrl = window.location.origin === 'http://localhost:3000' ? 'http://
 
 const charts = {};
 
-function createChart(surveys, id, title, chartType) {
+// replace school names with abbreviations
+const schoolAbbreviations = {
+    'College and Graduate School of Arts & Sciences [AS]': 'AS',
+    'Darden School of Business [DA]': 'DA',
+    'Frank Batten School of Leadership and Public Policy [BA]': 'BA',
+    'McIntire School of Commerce [MC]': 'MC',
+    'School of Architecture [AR]': 'AR',
+    'School of Continuing & Professional Studies [CP]': 'CP',
+    'School of Data Science [DS]': 'DS',
+    'School of Education and Human Development [ED]': 'ED',
+    'School of Engineering and Applied Science [EN]': 'EN',
+    'School of Law [LW]': 'LW',
+    'School of Medicine [MD]': 'MD',
+    'School of Nursing [NU]': 'NU',
+    'UVA Wise [Wise]': 'Wise',
+};
+
+function createChart(surveys, id, title, chartType, backgroundColors) {
     const canvas = document.getElementById(id);
     const ctx = canvas.getContext('2d');
 
     if (charts[id])
         charts[id].destroy();
-
-    // replace school names with abbreviations
-    const schoolAbbreviations = {
-        'College and Graduate School of Arts & Sciences [AS]': 'AS',
-        'Darden School of Business [DA]': 'DA',
-        'Frank Batten School of Leadership and Public Policy [BA]': 'BA',
-        'McIntire School of Commerce [MC]': 'MC',
-        'School of Architecture [AR]': 'AR',
-        'School of Continuing & Professional Studies [CP]': 'CP',
-        'School of Data Science [DS]': 'DS',
-        'School of Education and Human Development [ED]': 'ED',
-        'School of Engineering and Applied Science [EN]': 'EN',
-        'School of Law [LW]': 'LW',
-        'School of Medicine [MD]': 'MD',
-        'School of Nursing [NU]': 'NU',
-        'UVA Wise [Wise]': 'Wise',
-    };
 
     const invertedAbbreviations = Object.fromEntries(
         Object.entries(schoolAbbreviations).map(([key, value]) => [value, key])
@@ -50,11 +50,26 @@ function createChart(surveys, id, title, chartType) {
         }
     }
 
+    console.log(Object.values(surveys))
+
+    // Copy surveys to summedOtherData, summing all non-schoolAbbreviation keys into 'Other'
+    const summedOtherData = {};
+    for (const key in surveys) {
+        if (key === 'Other' && typeof surveys[key] === 'object') {
+            for (const subKey in surveys[key]) {
+                summedOtherData['Other'] = (summedOtherData['Other'] || 0) + surveys[key][subKey];
+            }
+        } else {
+            summedOtherData[key] = surveys[key];
+        }
+    }
+
     const data = {
-        labels: Object.keys(surveys),
+        labels: Object.keys(summedOtherData),
         datasets: [{
             label: 'Responses',
-            data: Object.values(surveys),
+            data: Object.values(summedOtherData),
+            backgroundColor: backgroundColors
         }],
     };
 
@@ -89,10 +104,23 @@ function createChart(surveys, id, title, chartType) {
                         return invertedAbbreviations[context[0].label] ?? context[0].label;
                     },
                     // label: function (context) {
-                    //     const label = context.dataset.label || '';
+                    //     // If value = Other, break down count
                     //     const value = context.parsed || 0;
-                    //     return `${label}: ${value}`;
+                    //     return `Responses: ${value}`;
                     // }
+                    beforeBody: function (context) {
+                        console.log(context)
+                        const label = context[0].label;
+                        if (label === 'Other' && typeof surveys[label] === 'object') {
+                            let breakdown = '';
+                            for (const [subKey, subValue] of Object.entries(surveys['Other'])) {
+                                breakdown += `${subKey}: ${subValue}\n`;
+                            }
+                            return breakdown;
+                        } else {
+                            return '';
+                        }
+                    },
                 }
             }
         }, scales: {
@@ -143,11 +171,17 @@ function getValueCounts(data, key) {
 
 let data = [];
 
-async function refresh() {
+async function refresh(inputData = null) {
+    if (inputData !== null) {
+        data = inputData;
+        return;
+    }
+
     const response = await fetch(backendUrl + '/uvarc/api/workshops/survey/data', {
         method: "POST"
     });
     data = await response.json();
+    localStorage.setItem('workshopSurveyData', JSON.stringify(data));
 }
 
 function displayData(data) {
@@ -164,7 +198,7 @@ function displayData(data) {
 
     const headerRow = document.createElement('tr');
 
-    const unusedHeaders = ['ResponseId', 'RecordedDate', 'Finished', 'Progress', 'Duration (in seconds)', 'Q3A'];
+    const unusedHeaders = ['survey_id', 'ResponseId', 'RecordedDate', 'Finished', 'Progress', 'Duration (in seconds)', 'Q3A'];
 
     const topicTransformations = {
         'Deep Learning/Neural Networks': 'Deep Learning/Neural Networks',
@@ -225,6 +259,18 @@ function displayData(data) {
         });
 
         allResponsesDiv.appendChild(r);
+
+        // On right click, copy the ResponseId to clipboard
+        r.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            navigator.clipboard.writeText(row['ResponseId']);
+            alert(`Copied ResponseId ${row['ResponseId']} to clipboard`);
+        });
+
+        // On hover, show tooltip with ResponseId
+        r.addEventListener('mouseover', (event) => {
+            r.title = `Response ID: ${row['ResponseId']}`;
+        });
     });
 
     const topicsCounts = {};
@@ -233,13 +279,45 @@ function displayData(data) {
             topicsCounts[topicTransformations[topic] ?? topic] = (topicsCounts[topic] || 0) + 1;
         });
     });
-    createChart(topicsCounts, 'topics-chart', 'Topics', 'bar');
+    // Sort topicsCounts by value descending
+    const sortedTopicsCounts = Object.fromEntries(
+        Object.entries(topicsCounts).sort(([, a], [, b]) => b - a)
+    );
+
+    createChart(sortedTopicsCounts, 'topics-chart', 'Topics', 'bar');
 
     const positionsCounts = getValueCounts(data, 'Q1');
     createChart(positionsCounts, 'positions-chart', 'Role', 'pie');
 
-    const departmentsCounts = getValueCounts(data, 'Q2');
-    createChart(departmentsCounts, 'departments-chart', 'Schools', 'pie');
+    // If department is not in schoolAbbreviations, count it as 'Other'
+    const adjustedDepartmentsCounts = { 'Other': {} };
+    Object.entries(getValueCounts(data, 'Q2')).forEach(([key, value]) => {
+        if (key in schoolAbbreviations) {
+            adjustedDepartmentsCounts[key] = value;
+        } else {
+            if (key in adjustedDepartmentsCounts['Other']) {
+                adjustedDepartmentsCounts['Other'][key] += value;
+            } else {
+                adjustedDepartmentsCounts['Other'][key] = value;
+            }
+            // adjustedDepartmentsCounts['Other'] = (adjustedDepartmentsCounts['Other'] || 0) + value;
+        }
+    });
+    // const departmentsCounts = getValueCounts(data, 'Q2');
+    createChart(adjustedDepartmentsCounts, 'departments-chart', 'Schools', 'pie', [
+        '#4dc9f6',
+        '#f67019',
+        '#f53794',
+        '#537bc4',
+
+        '#acc236',
+        '#166a8f',
+        '#00a950',
+        '#58595b',
+        '#8549ba',
+        '#e6194b',
+        '#3cb44b',
+    ]);
 }
 
 function displayFilteredData(checked) {
@@ -254,11 +332,18 @@ function displayFilteredData(checked) {
     document.getElementById('response-count').innerText = newData.length;
 
     displayData(newData);
+    document.querySelector('.loading').style.display = 'none';
 }
 
-refresh().then(() => displayFilteredData(true));
+refresh(localStorage.getItem('workshopSurveyData') ? JSON.parse(localStorage.getItem('workshopSurveyData')) : null).then(() => displayFilteredData(true));
 
 document.getElementById('finished-only').addEventListener('change', async (event) => {
     const finishedOnly = event.target.checked;
+    displayFilteredData(finishedOnly);
+});
+
+document.getElementById('refresh-data').addEventListener('click', async () => {
+    await refresh();
+    const finishedOnly = document.getElementById('finished-only').checked;
     displayFilteredData(finishedOnly);
 });

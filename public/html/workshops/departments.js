@@ -30,11 +30,13 @@ Chart.Tooltip.positioners.bottom = function (elements, eventPosition) {
     }
 }
 
-async function refresh() {
+async function refresh(data = null) {
     allWorkshopsDiv.innerHTML = '';
 
-    const response = await fetch(backendUrl + '/uvarc/api/workshops/attendance/data');
-    const data = await response.json();
+    if (data === null) {
+        const response = await fetch(backendUrl + '/uvarc/api/workshops/attendance/data');
+        data = await response.json();
+    }
 
     data.map(row => {
         console.log(row.seats_taken, row.attendance);
@@ -85,6 +87,7 @@ async function refresh() {
     showStats(data);
 
     workshopData = data;
+    localStorage.setItem('workshopData', JSON.stringify(data));
 }
 
 function showChart(ctxId) {
@@ -110,11 +113,16 @@ function setFilterInputs(filters) {
     document.getElementById('time').value = filters.time;
     document.getElementById('name').value = filters.name;
     document.getElementById('graph-type').value = filters.type;
-    document.getElementById('categorize').checked = filters.categorize;
+    // document.getElementById('categorize').checked = filters.categorize;
+    document.getElementById('presenter').value = filters.presenter ?? '';
+    document.getElementById('min-attendance').value = filters.minAttendance ?? '';
+    document.getElementById('max-attendance').value = filters.maxAttendance ?? '';
     document.getElementById('tags').value = filters.tags ?? '';
     document.getElementById('drop-0').checked = filters.drop;
 
     try {
+        if (!filters.date || filters.date.split('-').length !== 2)
+            return;
         const [start, end] = filters.date.split('-');
         document.getElementById('start-date').value = new Date(parseInt(start)).toISOString().split('T')[0];
         document.getElementById('end-date').value = new Date(parseInt(end)).toISOString().split('T')[0];
@@ -164,6 +172,43 @@ function dateToSemester(date) {
     return `${period}${date.getFullYear() % 100}`;
 }
 
+function removeChart(ctxId) {
+    charts[ctxId].destroy();
+
+    const ctx = document.getElementById(ctxId);
+    if (ctx) {
+        ctx.remove();
+    }
+
+    const button = chartSelect.querySelector(`button[aria-label="${ctxId}"]`);
+    if (button) {
+        button.remove();
+    }
+
+    const index = ctxs.indexOf(ctxId);
+    ctxs.splice(index, 1);
+    delete charts[ctxId];
+    delete filters[ctxId];
+
+    if (currentCtxId === ctxId) {
+        // Show previous chart
+        const newCtxId = ctxs[Math.max(0, index - 1)];
+        console.log(newCtxId);
+        showChart(newCtxId);
+        setFilterInputs(currentFilters);
+        filterTable(workshopData, currentFilters);
+    }
+
+    // Renumber buttons
+    ctxs.forEach((ctxId, i) => {
+        const button = chartSelect.querySelector(`button[aria-label="${ctxId}"]`);
+        if (button) {
+            button.textContent = i + 1;
+        }
+    });
+}
+
+
 function createChart(data, ctxId) {
     let ctx = document.getElementById(ctxId);
 
@@ -203,6 +248,25 @@ function createChart(data, ctxId) {
 
     departments.forEach((dept, index) => {
         departmentColors[dept] = colorPalette[index % colorPalette.length];
+    });
+
+    const legendContainer = document.getElementById('legend-container');
+    legendContainer.innerHTML = '';
+    departments.forEach(dept => {
+        const legendItem = document.createElement('div');
+        legendItem.classList.add('legend-item');
+
+        const colorBox = document.createElement('span');
+        colorBox.classList.add('color-box');
+        colorBox.style.backgroundColor = departmentColors[dept];
+
+        const label = document.createElement('span');
+        label.innerText = dept;
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(label);
+
+        legendContainer.appendChild(legendItem);
     });
 
     const chartDatasets = departments.map(dept => ({
@@ -298,6 +362,9 @@ function createChart(data, ctxId) {
                     anchor: 'end',
                     rotation: -90,
                     align: 'start',
+                    font: {
+                        size: Math.max(15, Math.min(25, 300 / data.length))
+                    },
                     formatter: (value, context) => {
                         const row = data[context.dataIndex];
                         return `${parseInt(row['attendance'])} / ${parseInt(row['seats_taken'])} / ${row['seats']}`;
@@ -311,7 +378,7 @@ function createChart(data, ctxId) {
                     }
                 },
                 legend: {
-                    display: true
+                    display: false
                 },
                 tooltip: {
                     xAlign: 'center',
@@ -321,13 +388,13 @@ function createChart(data, ctxId) {
                         title: context => {
                             const row = data[context[0].dataIndex];
                             if (currentFilters.type === 'percentage') {
-                                return `${row['title']} (${(100 * parseInt(row['attendance']) / parseInt(row['seats'])).toFixed(2)}%)`;
+                                return `${row['title']} (${(100 * parseInt(row['attendance']) / parseInt(row['seats_taken'])).toFixed(2)}%)`;
                             } else if (currentFilters.type === 'count') {
-                                return `${row['title']} (${parseInt(row['attendance'])}/${parseInt(row['seats'])}) (${row['seats_taken']} Registrations)`;
+                                return `${row['title']} (${parseInt(row['attendance'])}/${parseInt(row['seats_taken'])} Registrations) (${row['seats']} Total Seats)`;
                             }
                         },
                         label: context => {
-                            return `Attendees from ${context.dataset.label}: ${context.formattedValue}`;
+                            return null;
                         },
                         footer: context => {
                             if (currentFilters.categorize) {
@@ -335,7 +402,7 @@ function createChart(data, ctxId) {
                                 return `Total: ${parseInt(row['attendance'])}/${parseInt(row['seats'])}`;
                             } else {
                                 const row = data[context[0].dataIndex];
-                                return `Start: ${new Date(row['start']).toLocaleString()}\nEnd: ${new Date(row['end']).toLocaleString()}`;
+                                return `Presenter(s): ${row['presenter']}\nStart: ${new Date(row['start']).toLocaleString()}\nEnd: ${new Date(row['end']).toLocaleString()}`;
                             }
                         }
                     }
@@ -352,6 +419,14 @@ function createChart(data, ctxId) {
                 },
                 y: {
                     beginAtZero: true
+                },
+                y1: {
+                    position: "right",
+                    afterBuildTicks: (axis) => {
+                        axis.ticks = [...axis.chart.scales.y.ticks];
+                        axis.min = axis.chart.scales.y.min;
+                        axis.max = axis.chart.scales.y.max;
+                    },
                 }
             },
             layout: {
@@ -367,6 +442,9 @@ function createChart(data, ctxId) {
             }
         }
     });
+
+    // Scroll to right side
+    document.getElementById('charts-outer-wrapper').scrollLeft = chartsDiv.scrollWidth;
 }
 
 function saveCharts() {
@@ -446,6 +524,10 @@ function filter(data, filters) {
         filteredData = filterOperators(filteredData, filters.name, (row, name) => row['title'].toLowerCase().includes(name.toLowerCase()));
     }
 
+    if (filters.presenter) {
+        filteredData = filterOperators(filteredData, filters.presenter, (row, presenter) => row['presenter'].toLowerCase().includes(presenter.toLowerCase()));
+    }
+
     if (filters.time) {
         filteredData = filterOperators(filteredData, filters.time, (row, time) => {
             const [start, end] = time.split('-');
@@ -467,6 +549,15 @@ function filter(data, filters) {
             return row.start >= new Date(start) && row.end <= new Date(end);
         });
     }
+
+    if (filters.minAttendance) {
+        filteredData = filteredData.filter(row => (row['attendance'] / row['seats_taken']) * 100 >= filters.minAttendance);
+    }
+
+    if (filters.maxAttendance) {
+        filteredData = filteredData.filter(row => (row['attendance'] / row['seats_taken']) * 100 <= filters.maxAttendance);
+    }
+
 
     // group by tags, each data point can belong to multiple tags
     if (filters.categorize) {
@@ -577,9 +668,22 @@ document.getElementById('name').addEventListener('change', (event) => {
 const chartSelect = document.getElementById('chart-select');
 
 document.getElementById('make-new-chart').addEventListener('click', () => {
+    if (Object.keys(charts).length >= 10) {
+        alert('Maximum number of charts reached (10)');
+        return;
+    }
     const newCtxId = `chart-${ctxs.length}`;
     createChart(filter(workshopData, currentFilters), newCtxId);
     ctxId = newCtxId;
+});
+
+document.getElementById('delete-current-chart').addEventListener('click', () => {
+    if (ctxs.length <= 1) {
+        alert('At least one chart must remain');
+        return;
+    }
+
+    removeChart(currentCtxId);
 });
 
 document.getElementById('graph-type').addEventListener('change', (event) => {
@@ -599,6 +703,20 @@ document.getElementById('graph-type').addEventListener('change', (event) => {
 document.getElementById('tags').addEventListener('change', (event) => {
     const tags = event.target.value;
     currentFilters.tags = tags;
+    createChart(filter(workshopData, currentFilters), currentCtxId);
+    filterTable(workshopData, currentFilters);
+});
+
+document.getElementById('min-attendance').addEventListener('change', (event) => {
+    const minAttendance = parseFloat(event.target.value);
+    currentFilters.minAttendance = isNaN(minAttendance) ? null : minAttendance;
+    createChart(filter(workshopData, currentFilters), currentCtxId);
+    filterTable(workshopData, currentFilters);
+});
+
+document.getElementById('max-attendance').addEventListener('change', (event) => {
+    const maxAttendance = parseFloat(event.target.value);
+    currentFilters.maxAttendance = isNaN(maxAttendance) ? null : maxAttendance;
     createChart(filter(workshopData, currentFilters), currentCtxId);
     filterTable(workshopData, currentFilters);
 });
@@ -631,4 +749,8 @@ document.getElementById('end-date').addEventListener('change', filterDateInput);
 document.getElementById('save').addEventListener('click', saveCharts);
 document.getElementById('load').addEventListener('click', loadCharts);
 
-refresh();
+refresh(localStorage.getItem('workshopData') ? JSON.parse(localStorage.getItem('workshopData')) : null);
+
+document.getElementById('refresh-data').addEventListener('click', () => {
+    refresh();
+});
