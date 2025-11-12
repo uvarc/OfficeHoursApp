@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Survey Data</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
         * {
@@ -84,11 +85,27 @@
         button:hover {
             background-color: #111;
         }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 
 <body>
     <main>
+        <div class="loading">
+            <div>
+                <i class="fa fa-spinner fa-spin"></i> Loading...
+            </div>
+        </div>
         <div class="main">
             <div>
                 <canvas id="topics-chart"></canvas>
@@ -109,6 +126,9 @@
                 Finished Surveys Only?
                 <input type="checkbox" name="finished-only" id="finished-only" checked>
             </label>
+            <div id="refresh-container">
+                <button id="refresh-data">Refresh Data</button>
+            </div>
             <a id="workshop-link" href="/workshops/attendance">&lt; Main Visualization</a>
             <a id="workshop-link" href="/workshops/departments">&lt; Department Visualization</a>
         </div>
