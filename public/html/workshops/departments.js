@@ -394,7 +394,7 @@ function createChart(data, ctxId) {
                             }
                         },
                         label: context => {
-                            return null;
+                            return `Attendees from ${context.dataset.label}: ${context.formattedValue}`;
                         },
                         footer: context => {
                             if (currentFilters.categorize) {
