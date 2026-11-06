@@ -1,6 +1,6 @@
 // Production URL
-export const irbEndpointUrl = "https://uvarc-unified-service-prod.pods.uvarc.io/uvarc/api/irb"
-export const endpoint_url = "https://uvarc-unified-service-prod.pods.uvarc.io/uvarc/api/ticket/officehours/create_ticket"
+export const irbEndpointUrl = "https://uvarc-unified-service-prod.k8s.rc.virginia.edu/uvarc/api/irb"
+export const endpoint_url = "https://uvarc-unified-service-prod.k8s.rc.virginia.edu/uvarc/api/ticket/officehours/create_ticket"
 // Dev URL [uncomment when in dev environment]
 //export const irbEndpointUrl = "http://localhost:5000/uvarc/api/irb"
 //export const dacEndpointUrl = "http://localhost:5000/uvarc/api/ticket/dac/create_ticket"
